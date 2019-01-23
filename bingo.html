@@ -1,0 +1,306 @@
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
+		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
+		<title>Scammer Bingo V2</title>
+<style>
+body {
+	background-image: url('http://kitboga.com/round.png');
+}
+.bingo-block {
+	background-color: var(--light);
+}
+.bingo-hover {
+	background-color: var(--dark);
+	color: var(--light);
+}
+.bingo-hit {
+	background-color: var(--dark);
+	color: var(--light);
+}
+td {
+	width: 20%;
+}
+tr {
+	height: 7em;
+}
+</style>
+<script>
+function pick(num) {
+	let texts = [
+		'> 1h 30mins',
+		'barking in the background',
+		'boga gets busted',
+		'burner card given',
+		'comments about background',
+		'deletes files',
+		'each and everything',
+		'event viewer',
+		'gives microsoft id number',
+		'creepy scammer advances',
+		'kit sings',
+		'gives phone to supervisor',
+		'hackers on your machine',
+		'inspect element',
+		'kit claims to be a professional',
+		'kit hands phone to significant other',
+		'"would you listen to me for a minute"',
+		'scammer is a rap god',
+		'leave the mouse',
+		'level 7 technician',
+		'level 9 technician',
+		'lifetime package',
+		'made up virus',
+		'msconfig',
+		'msinfo32',
+		'multiple scammers on phone',
+		'scammer will "lose his job"',
+		'netstat',
+		'opens nudes folder',
+		'over 9000',
+		'fighting in the background',
+		'scammer can\'t math',
+		'kit pretends to cry',
+		'scammer pretends to cry',
+		'begging',
+		'extremely bad acting',
+		'price < $99',
+		'price > $399',
+		'provides a discount',
+		'bragging about money',
+		'references porn',
+		'mic-eating',
+		'scammer confesses love',
+		'scammer is enraged by notepad',
+		'scammer laughs',
+		'speaking another language',
+		'stops kit from using mouse',
+		'sudden hold',
+		'scammer swears',
+		'transfer to boss',
+		'tree command',
+		'tries to syskey',
+		'windows + r',
+		'yellow question mark',
+	];
+	if (num > texts.length) {
+		let fun = [];
+		for (let i = 0; i < num; i++) {
+			fun.push('you\'re asking for too many options');
+		}
+		return fun;
+	}
+	let selected = [];
+	let list = [];
+	let _pick = () => {
+		let k = Math.floor(Math.random() * texts.length);
+		if (selected.includes(k)) {
+			return _pick();
+		}
+		selected.push(k);
+		return texts[k];
+	}
+	for (let i = 0; i < num; i++) {
+		list.push(_pick());
+	}
+	return list;
+}
+
+function Bingo(root) {
+	this.root = root;
+	this.container = null;
+	this.header = null;
+	this.initialized = false;
+	this.width = 5;
+	this.height = 5;
+	this.list = [];
+	this.list_index = 0;
+	this.free_spot = [2, 2];
+	this.hits = [];
+	this.won = false;
+	this.hover = (val, obj) => {
+		if (val) {
+			return () => {
+				obj.classList.add('bingo-hover');
+			}
+		}
+		return () => {
+			obj.classList.remove('bingo-hover');
+		}
+	}
+	this.click = (obj, i, j) => {
+		return () => {
+			let val = this.hits[i][j];
+			if (val) {
+				obj.classList.remove('bingo-hit');
+			} else {
+				obj.classList.add('bingo-hit');
+			}
+			this.hits[i][j] = !val;
+
+			let solved = this.isSolved();
+
+			if (solved && !this.won) {
+				this.won = true;
+				let alt = document.createElement('div');
+				alt.classList.add('alert');
+				alt.classList.add('alert-success');
+
+				let h = document.createElement('h2');
+				h.appendChild(document.createTextNode('Congratulations, you won! — '));
+
+				let a = document.createElement('a');
+				a.href = '#';
+				a.onclick = this.start;
+
+				a.appendChild(document.createTextNode('Restart?'));
+				h.appendChild(a);
+				alt.appendChild(h);
+				this.header.appendChild(alt);
+			} else if (!solved && this.won) {
+				this.won = false;
+				for (let i = this.header.childNodes.length; i > 0; i--) {
+					this.header.removeChild(this.header.childNodes[i-1]);
+				}
+			}
+		}
+	}
+	this.toString = () => {
+		let output = '[\n';
+		for (let y = 0; y < this.hits.length; y++) {
+			output += '\t';
+			for (let x = 0; x < this.hits[y].length; x++) {
+				output += this.hits[y][x];
+				output += ', ';
+			}
+			output += '\n';
+		}
+		output += ']';
+		return output;
+	}
+	this.isSolved = () => {
+		// rows
+		for (let y = 0; y < this.height; y++) {
+			let solved = true;
+			for (let x = 0; x < this.width; x++) {
+				if (!this.hits[y][x]) {
+					solved = false;
+					break;
+				}
+			}
+			if (solved) {
+				return true;
+			}
+		}
+
+		// cols
+		for (let x = 0; x < this.width; x++) {
+			let solved = true;
+			for (let y = 0; y < this.height; y++) {
+				if (!this.hits[y][x]) {
+					solved = false;
+					break;
+				}
+			}
+			if (solved) {
+				return true;
+			}
+		}
+
+		// diags
+		if (this.width == this.height) {
+			let right = true;
+			let left = true;
+			for (let i = 0; i < this.width; i++) {
+				if (!this.hits[i][i]) {
+					right = false;
+				}
+				if (!this.hits[i][this.width - i - 1]) {
+					left = false;
+				}
+			}
+			if (right || left) {
+				return true;
+			}
+		} else {
+			console.log('Bingo doesn\'t really work with different side lengths');
+		}
+
+		return false;
+	}
+	this.start = () => {
+		if (this.initialized) {
+			this.root.removeChild(this.header);
+			this.root.removeChild(this.container);
+		}
+		this.add_container();
+		this.list = pick(this.width * this.height - 1);
+		this.list_index = 0;
+		this.hits = [];
+		for (let k = 0; k < this.height; k++) {
+			this.hits.push([]);
+			this.add_row(k);
+		}
+	};
+	this.add_container = () => {
+		this.initialized = true;
+		let h = document.createElement('div');
+		let c = document.createElement('table');
+		this.root.appendChild(h);
+		this.root.appendChild(c);
+		this.header = h;
+		this.container = c;
+	};
+	this.add_row = (i) => {
+		let row = document.createElement('tr');
+		this.container.appendChild(row);
+		for (let k = 0; k < this.height; k++) {
+			this.hits[i].push(false);
+			this.add_cell(i, k);
+		}
+	};
+	this.add_cell = (i, j) => {
+		let last = this.container.lastElementChild;
+		let block = document.createElement('td');
+		let text = null;
+		block.id = 'block-' + i + '-' + j;
+		block.classList.add('bingo-block');
+		block.classList.add('text-center');
+		block.classList.add('align-middle');
+		block.classList.add('border');
+		block.classList.add('p-2');
+		if (i == this.free_spot[0] && j == this.free_spot[1]) {
+			this.hits[i][j] = true;
+			text = 'free space';
+			block.classList.add('bingo-hit');
+		} else {
+			block.onmouseenter = this.hover(true, block);
+			block.onmouseout = this.hover(false, block);
+			block.onclick = this.click(block, i, j);
+			text = this.list[this.list_index];
+			this.list_index += 1;
+		}
+		block.appendChild(document.createTextNode(text));
+		last.appendChild(block);
+	};
+}
+
+let global_bingo = null;
+
+function start_bingo() {
+	let bingo = new Bingo(document.getElementById('game'));
+	bingo.start();
+	global_bingo = bingo;
+}
+</script>
+	</head>
+<body onload='start_bingo()'>
+	<div class='container'>
+	<h1>Scammer Bingo V2</h1>
+	<div id='game' class='mx-auto my-3'></div>
+	<div class='alert alert-info'>
+		This is a fan version of <a href='http://kitboga.com/bingo'>Scammer Bingo</a>.
+	</div>
+</body>
+</html>
