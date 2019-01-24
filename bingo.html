@@ -24,7 +24,13 @@ td {
 	width: 20%;
 }
 tr {
-	height: 7em;
+	height: 5em;
+}
+
+@media (min-width: 991.98px) {
+	tr {
+		height: 9em;
+	}
 }
 </style>
 <script>
@@ -138,6 +144,11 @@ function Bingo(root) {
 	this.hits = [];
 	this.won = false;
 	this.hover = (val, obj) => {
+		if ('ontouchstart' in document.documentElement ||
+			navigator.maxTouchPoints > 0 ||
+			navigator.msMaxTouchPoints > 0) {
+			return () => {};
+		}
 		if (val) {
 			return () => {
 				obj.classList.add('bingo-hover');
@@ -287,7 +298,7 @@ function Bingo(root) {
 		block.classList.add('text-center');
 		block.classList.add('align-middle');
 		block.classList.add('border');
-		block.classList.add('p-2');
+		block.classList.add('md-p-1');
 		if (i == this.free_spot[0] && j == this.free_spot[1]) {
 			this.hits[i][j] = true;
 			text = 'free space';
@@ -316,7 +327,7 @@ function start_bingo() {
 <body onload='start_bingo()'>
 	<div class='container'>
 	<h1>Scammer Bingo V2</h1>
-	<div id='game' class='mx-auto my-3'></div>
+	<div id='game' class='my-3'></div>
 	<div class='alert alert-info'>
 		This is a fan version of <a href='http://kitboga.com/bingo'>Scammer Bingo</a> &mdash; <a href='https://github.com/mtib/boga-bingo'>Code</a>.
 	</div>
