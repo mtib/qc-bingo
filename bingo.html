@@ -24,12 +24,18 @@ td {
 	width: 20%;
 }
 tr {
-	height: 5em;
+	height: 6em;
+	font-size: 0.8rem;
 }
 
-@media (min-width: 991.98px) {
+@media (min-width: 765.98px) {
+	.bingo-block {
+		padding-left: 1em;
+		padding-right: 1em;
+	}
 	tr {
 		height: 9em;
+		font-size: inherit;
 	}
 }
 </style>
@@ -298,7 +304,6 @@ function Bingo(root) {
 		block.classList.add('text-center');
 		block.classList.add('align-middle');
 		block.classList.add('border');
-		block.classList.add('md-p-1');
 		if (i == this.free_spot[0] && j == this.free_spot[1]) {
 			this.hits[i][j] = true;
 			text = 'free space';
