@@ -46,6 +46,17 @@ tr {
 }
 </style>
 <script>
+function selector() {
+	let args = [...arguments];
+	return () => {
+		let s = args[Math.floor(Math.random() * args.length)];
+		if (typeof(s) == 'function') {
+			return s();
+		}
+		return s;
+	}
+}
+
 function pick(num) {
 	let texts = [
 		// Parts of the scam
@@ -78,6 +89,8 @@ function pick(num) {
 		'stopped services',
 		'install microsoft firewall',
 		'asks for callback number',
+		'compromised ip address',
+		'using notepad for information',
 		// Common Phrases
 		'"would you listen to me for a minute"',
 		'"all this situation"',
@@ -85,6 +98,8 @@ function pick(num) {
 		'"click on run"',
 		'"hackers on your machine"',
 		'"leave the mouse"',
+		'"i tell you"',
+		'"do one thing"',
 		// Scammer Acting
 		'begging',
 		'extremely bad acting',
@@ -119,24 +134,28 @@ function pick(num) {
 		'kit claims to be a professional',
 		'kit demands respect',
 		'kit gets busted',
+		'kit confronts scammer',
 		'dubious advice given',
 		'kit hands phone to significant other',
+		'kit performs \'prince of bel-air\'',
 		'logging into bank account',
 		'multiple kit personas in one call',
 		'multiple scammers on phone',
 		'singing',
 		// Tech nonsens
-		'gives microsoft id number',
-		'gives technician level',
+		selector(
+			'gives microsoft id number',
+			'gives technician level'),
 		'gives phone to supervisor',
 		'scam doesn\'t make any sense',
 		// Twitch Chat in-joke
 		'>2 digit leak',
 		'scammer is a rap god',
+		'@juno.com email',
+		'memometer overflow',
 		// Time
 		'>1h 30mins',
 		// Memes (should be updated regularly)
-		'Memo-O-Meter overflow',
 		'"over 9000"',
 		'parked out by the lake',
 	];
@@ -154,8 +173,12 @@ function pick(num) {
 		if (selected.includes(k)) {
 			return _pick();
 		}
+		let p = texts[k];
+		if (typeof(p) == 'function') {
+			p = p();
+		}
 		selected.push(k);
-		return texts[k];
+		return p;
 	}
 	for (let i = 0; i < num; i++) {
 		list.push(_pick());
@@ -358,7 +381,7 @@ function start_bingo() {
 	<h1 class='text-center'>Scammer Bingo V2</h1>
 	<div id='game' class='my-3'></div>
 	<div class='alert alert-info'>
-		This is a fan version of <a href='http://kitboga.com/bingo'>Scammer Bingo</a> &mdash; <a href='https://github.com/mtib/boga-bingo'>Code</a> &mdash; <a href='https://mtib.github.io/boga-bingo/'>About</a>.
+		This is the cult version of <a href='http://kitboga.com/bingo'>Scammer Bingo</a> &mdash; <a href='https://github.com/mtib/boga-bingo'>Code</a> &mdash; <a href='https://mtib.github.io/boga-bingo/'>About</a>.
 	</div>
 </body>
 </html>
