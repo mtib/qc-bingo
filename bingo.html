@@ -48,69 +48,23 @@ tr {
 <script>
 function pick(num) {
 	let texts = [
-		'"would you listen to me for a minute"',
-		'> 1h 30mins',
-		'>2 digit support key leak',
-		'actual tech advice',
-		'all this situation',
-		'barking in the background',
-		'begging',
-		'bragging about money',
-		'burner card given',
-		'comments about background',
-		'computer get\'s "fixed"',
-		'creepy scammer advances',
-		'deletes files',
-		'each and everything',
-		'earth is flat',
-		'event viewer',
-		'extremely bad acting',
-		'fighting in the background',
+		// Parts of the scam
 		'gift card',
-		'gives microsoft id number',
-		'gives phone to supervisor',
-		'going on a car ride',
-		'scam doesn\'t make any sense',
-		'hackers on your machine',
-		'hot mic toilet break',
-		'"click on run"',
+		'deletes files',
+		'burner card given',
+		'event viewer',
 		'inspect element',
-		'kit accused of scamming',
-		'kit claims to be a professional',
-		'kit demands respect',
-		'kit gets busted',
-		'kit hands phone to significant other',
-		'singing',
-		'leave the mouse',
-		'gives technician level',
-		'death threats',
+		'computer get\'s "fixed"',
 		'lifetime package',
-		'made up virus',
-		'mic-eating',
 		'msconfig',
 		'msinfo32',
-		'multiple kit personas in one call',
-		'multiple scammers on phone',
+		'made up virus',
 		'netstat',
-		'opens nudes folder',
-		'over 9000',
-		'pretend crying',
 		'price < $99',
 		'price > $399',
 		'provides a discount',
 		'references porn',
-		'scammer admires kits voices',
-		'scammer can\'t fix actual technical problems',
-		'scammer can\'t math',
-		'scammer installs chrome',
-		'scammer is a rap god',
-		'scammer is enraged by notepad',
-		'scammer laughs',
-		'scammer swears',
-		'scammer switches names',
-		'scammer will "lose his job"',
-		'someone confesses love',
-		'speaking another language',
+		'installing chrome',
 		'stops kit from using mouse',
 		'sudden hold',
 		'transfer to boss',
@@ -118,12 +72,72 @@ function pick(num) {
 		'tries to syskey',
 		'changes password',
 		'windows + r',
+		'scammer gets remote access',
 		'yellow question mark',
+		'will call the police',
+		// Common Phrases
+		'"would you listen to me for a minute"',
+		'"all this situation"',
+		'"each and everything"',
+		'"click on run"',
+		'"hackers on your machine"',
+		'"leave the mouse"',
+		// Scammer Acting
+		'begging',
+		'extremely bad acting',
+		'pretend crying',
+		'scammer laughing',
+		'scammer switches names',
+		'scammer will "lose his job"',
+		// Scammers off script
+		'creepy scammer advances',
+		'actual tech advice',
+		'opens nudes folder',
+		'bragging about money',
+		'death threats',
+		'scammer swears',
+		'scammer admires kits voices',
+		'scammer can\'t fix actual technical problems',
+		'scammer can\'t math',
+		'someone confesses love',
+		'speaking another language',
+		'scammers fighting each other',
+		// Background Noises
+		'fighting in the background',
+		'animals in the background',
+		'mic-eating',
+		// Kit messing with the scammer
+		'comments about background',
+		'earth is flat',
+		'going on a car ride',
+		'hot mic toilet break',
+		'kit accused of scamming',
+		'kit claims to be a professional',
+		'kit demands respect',
+		'kit gets busted',
+		'kit hands phone to significant other',
+		'logging into bank account',
+		'multiple kit personas in one call',
+		'multiple scammers on phone',
+		'singing',
+		// Tech nonsens
+		'gives microsoft id number',
+		'gives technician level',
+		'gives phone to supervisor',
+		'scam doesn\'t make any sense',
+		// Twitch Chat in-joke
+		'>2 digit leak',
+		'scammer is a rap god',
+		// Time
+		'>1h 30mins',
+		// Memes
+		'"over 9000"',
+		'parked out by the Lake',
 	];
 	if (num > texts.length) {
 		let fun = [];
 		for (let i = 0; i < num; i++) {
-			fun.push('you\'re asking for too many options');
+			fun.push('NEO');
 		}
 		return fun;
 	}
@@ -143,16 +157,17 @@ function pick(num) {
 	return list;
 }
 
-function Bingo(root) {
+function Bingo(root, size) {
+	this.size = size;
 	this.root = root;
 	this.container = null;
 	this.header = null;
 	this.initialized = false;
-	this.width = 5;
-	this.height = 5;
+	this.width = this.size;
+	this.height = this.size;
 	this.list = [];
 	this.list_index = 0;
-	this.free_spot = [2, 2];
+	this.free_spot = [(this.width-1)/2, (this.height-1)/2];
 	this.hits = [];
 	this.won = false;
 	this.hover = (val, obj) => {
@@ -326,12 +341,9 @@ function Bingo(root) {
 	};
 }
 
-let global_bingo = null;
-
 function start_bingo() {
-	let bingo = new Bingo(document.getElementById('game'));
+	let bingo = new Bingo(document.getElementById('game'), 5);
 	bingo.start();
-	global_bingo = bingo;
 }
 </script>
 	</head>
