@@ -46,6 +46,12 @@ tr {
 }
 </style>
 <script>
+/*
+ * selector(...args):
+ *
+ * selects one of the args randomly and returns it, or calls
+ * it if it is a function, which means it can be nested indefinitely.
+ */
 function selector() {
 	let args = [...arguments];
 	return () => {
@@ -76,8 +82,10 @@ function pick(num) {
 		'msinfo32',
 		'made up virus',
 		'netstat',
-		'price < $99',
-		'price > $399',
+		selector(
+			'price < $99',
+			'price > $399'
+		),
 		'provides a discount',
 		'references porn',
 		'installing chrome',
@@ -127,8 +135,11 @@ function pick(num) {
 		'speaking another language',
 		'scammers fighting each other',
 		// Background Noises
-		'fighting in the background',
-		'animals in the background',
+		selector(
+			'fighting in the background',
+			'animals in the background',
+			'kit comments on background noises'
+		),
 		'mic-eating',
 		// Kit messing with the scammer
 		'comments about background',
@@ -143,15 +154,18 @@ function pick(num) {
 		'dubious advice given',
 		'kit hands phone to significant other',
 		'kit performs \'prince of bel-air\'',
+		'kit asks point blank if it\'s a scam',
 		'logging into bank account',
 		'multiple kit personas in one call',
 		'multiple scammers on phone',
 		'singing',
 		'"mayonnaise"',
+		'opens scam on wikipedia',
 		// Tech nonsens
 		selector(
 			'gives microsoft id number',
-			'gives technician level'),
+			'gives technician level'
+		),
 		'gives phone to supervisor',
 		'scam doesn\'t make any sense',
 		// Twitch Chat in-joke
@@ -160,7 +174,11 @@ function pick(num) {
 		'@juno.com email',
 		'memometer overflow',
 		// Time
-		'>1h 30mins',
+		selector(
+			'>1h 30mins',
+			'>1h',
+			'>30mins'
+		),
 		// Memes (should be updated regularly)
 		'"over 9000"',
 		'parked out by the lake',
